@@ -25,16 +25,18 @@ class TicketController extends Controller
         $fields = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'status' => 'required|in:open,in_progress,resolved',
-            'priority' => 'required|in:low,medium,high,critical',
+            'user_id'=>'required|exists:users,id',
+            'status' => 'nullable|in:open,in_progress,resolved',
+            'priority' => 'nullable|in:low,medium,high,critical',
             'assigned_to' => 'nullable|exists:users,id',
         ]);
 
         $validated['user_id'] = Auth::id();
-        $ticket = Ticket::create($fields);
-        $ticket->load(['user', 'assignedUser']);
+        Ticket::create($fields);
         
-        return $ticket;
+        return response()->json([
+            'message' => 'Ticket created successfully'
+        ]);
     }
 
     /**
@@ -60,8 +62,9 @@ class TicketController extends Controller
         ]);
 
         $ticket->update($fields);
-        $ticket->load(['user', 'assignedUser']);
-        return $ticket;
+        return response()->json([
+            'message'=>'ticket updated successfully'
+        ]);
     }
 
     /**
