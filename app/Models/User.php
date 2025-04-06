@@ -4,13 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
+
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -44,5 +48,37 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get tickets created by this user.
+     */
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class, 'user_id');
+    }
+
+    /**
+     * Get tickets assigned to this user.
+     */
+    public function assignedTickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class, 'assigned_to');
+    }
+
+    /**
+     * Check if user is an admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user is a staff member.
+     */
+    public function isStaff(): bool
+    {
+        return $this->role === 'staff';
     }
 }
