@@ -12,7 +12,10 @@ class UserController extends Controller
      */
     public function user(Request $request)
     {
-        return $request->user();
+        return response()->json([
+            'ok' => true,
+            'data' => $request->user()
+        ]);
     }
 
       /**
@@ -20,7 +23,12 @@ class UserController extends Controller
      */
     public function users()
     {
-        return User::all();
+        $users = User::all();
+        
+        return response() -> json([
+            'ok' => true,
+            'data' => $users
+        ]);
     }
 
 

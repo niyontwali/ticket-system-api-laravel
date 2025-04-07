@@ -13,8 +13,11 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::with(['user', 'assignedUser'])->get();
-        return $tickets;
+        $tickets = Ticket::with(['user', 'assignedUser', 'comments'])->get();
+        return response() -> json([
+            'ok' => true,
+            'data'=> $tickets
+        ]);
     }
 
     /**
@@ -35,6 +38,7 @@ class TicketController extends Controller
         Ticket::create($fields);
         
         return response()->json([
+            'ok' => true,
             'message' => 'Ticket created successfully'
         ]);
     }
@@ -44,8 +48,11 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $ticket->load(['user', 'assignedUser']);
-        return $ticket;
+        $ticket->load(['user', 'assignedUser', 'comments.user']);
+        return response() -> json([
+            'ok' => true,
+            'data'=> $ticket
+        ]);
     }
 
     /**
@@ -63,7 +70,8 @@ class TicketController extends Controller
 
         $ticket->update($fields);
         return response()->json([
-            'message'=>'ticket updated successfully'
+            'ok' => true,
+            'message' => 'Ticket updated successfully'
         ]);
     }
 
@@ -73,6 +81,9 @@ class TicketController extends Controller
     public function destroy(Ticket $ticket)
     {
         $ticket->delete();
-        return ['message' => 'Ticket deleted successfully'];
+        return response()->json([
+            'ok' => true,
+            'message' => 'Ticket deleted successfully'
+        ]);
     }
 }
