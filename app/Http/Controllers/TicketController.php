@@ -13,7 +13,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::with(['user', 'assignedUser', 'comments'])->get();
+        $tickets = Ticket::with(['user', 'assignedUser', 'comments'])->latest()->get();
         return response() -> json([
             'ok' => true,
             'data'=> $tickets
