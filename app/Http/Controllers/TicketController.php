@@ -34,13 +34,13 @@ class TicketController extends Controller
             'assigned_to' => 'nullable|exists:users,id',
         ]);
 
-        $validated['user_id'] = Auth::id();
+        $fields['user_id'] = Auth::id();
         Ticket::create($fields);
         
         return response()->json([
             'ok' => true,
             'message' => 'Ticket created successfully'
-        ]);
+        ],201);
     }
 
     /**

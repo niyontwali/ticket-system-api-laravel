@@ -1,44 +1,34 @@
 <?php
 
 return [
-    'paths' => [
-        'api/*', 
-        'sanctum/csrf-cookie',
-        'login',
-        'logout',
-        'register',
-        'user/profile-information',
-        'forgot-password',
-        'reset-password'
-    ],
 
-    // Match your frontend's HTTP methods
-    'allowed_methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    /*
+    |--------------------------------------------------------------------------
+    | Cross-Origin Resource Sharing (CORS) Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure your settings for cross-origin resource sharing
+    | or "CORS". This determines what cross-origin operations may execute
+    | in web browsers. You are free to adjust these settings as needed.
+    |
+    | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+    |
+    */
 
-    // Dynamic origins for development/production
-    'allowed_origins' => [
-        env('APP_ENV') === 'local' 
-            ? 'http://localhost:5173'
-            : env('APP_FRONTEND_URL')
-    ],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+
+    'allowed_methods' => ['*'],
+
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
-    // Headers your React app might send
-    'allowed_headers' => [
-        'Authorization',
-        'Content-Type',
-        'X-Requested-With',
-        'X-CSRF-TOKEN'
-    ],
+    'allowed_headers' => ['*'],
 
-    // Headers your React app needs to access
-    'exposed_headers' => [
-        'Content-Disposition' 
-    ],
+    'exposed_headers' => [],
 
-    'max_age' => 0, 
+    'max_age' => 0,
 
-    // Enable if using Sanctum or cookies
-    'supports_credentials' => env('CORS_CREDENTIALS', false),
+    'supports_credentials' => false,
+
 ];

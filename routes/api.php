@@ -19,4 +19,4 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::apiResource('tickets', TicketController::class)->middleware('auth:sanctum');
 
 // comments
-Route::apiResource('comments', CommentController::class)->middleware('auth:sanctum');
+Route::apiResource('comments', CommentController::class)->middleware(['auth:sanctum', 'role:admin']);
